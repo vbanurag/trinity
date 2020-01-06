@@ -14,20 +14,20 @@
 
 ![演示](screen_shot.gif)
 
-## QQ交流群
+## QQ exchange group
 ```
 125218305
 ```
-## git commit 规范
-- 遵循[git cz](https://github.com/commitizen/cz-cli)
+## git commit specification
+- follow[git cz](https://github.com/commitizen/cz-cli)
 
-## 代码规范
-- kotlin缩进使用2空格缩进
-- c++代码遵循[google c++风格指南](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/)
+## Code Specification
+-kotlin indent using 2 spaces indent
+-C ++ code follows [google c ++ style guide] (https://en-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/)
 
 ## system version
 
-支持Android 4.3及以上版本
+支持Android 4.3 And above
 
 ## Development environment
 - Android Studio 3.5
@@ -195,9 +195,9 @@ Switch effect call code```
 image_process.OnAction("param/blurScreen", 0);
 ```
 
-## 自动化测试
-- 自动化测试使用[uiautomator2](https://github.com/openatx/uiautomator2)具体使用请参考文档
-使用方式如下:  
+## automated test
+-Use [uiautomator2] (https://github.com/openatx/uiautomator2) for automatic testing
+Use as follows:
 ``` python
 cd trinity
 python trinity.py
@@ -274,8 +274,8 @@ mRecord.stopPreview()
 
 - Set preview type
 ``` kotlin
-// 设置显示类型
-// 包含裁剪显示, 原比例上下留黑显示
+// Set the display type
+// Include crop display, the original proportion is displayed in black
 mRecord.setFrame(mFrame)
 ```
 
@@ -287,7 +287,7 @@ mRecord.switchCamera()
 
 - Get the current camera
 ``` kotlin
-// 返回当前摄像头id
+// return the current camera id
 val facing = mRecord.getCameraFacing()
 ```
 
@@ -297,23 +297,23 @@ mRecord.flash(mFlash)
 ```
 - Setting up zoom
 ``` kotlin
-// 设置焦距缩放, 0-100 100为最大缩放
+// Set the focal length zoom, 0-100 100 is the maximum zoom
 mRecord.setZoom(0)
 ```
 - Set exposure
 ``` kotlin
-// 设置相机曝光度, 100为最大曝光
+// Set the camera exposure, 100 is the maximum exposure
 mRecord.setExposureCompensation(0)
 ```
 - Manual focus
 ``` kotlin
-// 设置手动对焦, 参数为x和y
+// Set manual focus, parameters are x and y
 mRecord.focus(mPointF)
 ```
 - Set the angle of the recorded video
 ``` kotlin
 /**
- * @param rotation 旋转角度包含 0 90 180 270
+ * @param rotation Rotation angle includes 0 90 180 270
  */
 mRecord.setRecordRotation(0)
 ```
@@ -324,7 +324,7 @@ mRecord.setMute(false)
 - Double speed recording
 ``` kotlin
 /**
- * @param speed 速度包含 0.25 0.5 1.0 2.0 4.0倍速
+ * @param speed contains 0.25 0.5 1.0 2.0 4.0 times the speed
  */
 mRecord.setSpeed(mSpeed)
 ```
@@ -351,12 +351,12 @@ mRecord.setSpeed(mSpeed)
 mRecord.startRecording("/sdcard/a.mp4",
                       720,
                       1280,
-                      2000, // 2M码率
+                      2000, // 2M bit rate
                       30,
                       false,
                       44100,
-                      1, // 单声道
-                      128, // 128K 码率
+                      1, // Mono
+                      128, // 128K Rate
                       Int.MAX_VALUE)
 ```
 
@@ -394,7 +394,7 @@ mVideoEditor.insertClip(0, clip)
 - Delete a clip
 ``` kotlin
 /**
- * 根据下标删除一个片段
+ * Delete a segment in accordance with the subscript
  */
 mVideoEditor.removeClip(index)
 ```
