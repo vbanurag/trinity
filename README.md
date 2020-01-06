@@ -408,37 +408,37 @@ val count = mVideoEditor.getClipsCount()
  * If the fragment does not exist, returns a null
  * /
 val clip = mVideoEditor.getClip (index)
-`` `
+```
 -Replace a snippet based on a subscript
-`` `kotlin
+``` kotlin
 mVideoEditor.replaceClip (index, clip)
-`` `
+```
 -Get all clips
-`` `kotlin
+``` kotlin
 / **
  * Returns a collection of all clips
  * /
 val clips = mVideoEditor.getVideoClips ()
-`` `
+```
 -Total time to get all clips
-`` `kotlin
+``` kotlin
 val duration = mVideoEditor.getVideoDuration ()
-`` `
+```
 -Get the progress of the currently playing clip
-`` `kotlin
+``` kotlin
 val current = mVideoEditor.getCurrentPosition ()
-`` `
+```
 -Get start and end time of specified clip
-`` `kotlin
+``` kotlin
 val timeRange = mVideoEditor.getClipTimeRange (index)
-`` `
+```
 -Find subscripts of clips based on time
-`` `kotlin
+``` kotlin
 val index = mVideoEditor.getClipIndex (time)
-`` `
+```
 #### Background music
 -Add background music
-`` `kotlin
+``` kotlin
 / **
  * @param config background music json content
  * The specific json content is as follows:
@@ -453,7 +453,7 @@ val index = mVideoEditor.getClipIndex (time)
  * endTime: the end time of this music 2000 means this music only plays for 2 seconds
  * /
 val actionId = mVideoEditor.addMusic (config)
-`` `
+```
 
 - Updated background music
 ``` kotlin
