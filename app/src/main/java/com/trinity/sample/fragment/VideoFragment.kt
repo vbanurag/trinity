@@ -90,7 +90,7 @@ class VideoFragment : Fragment() {
 
   private fun getDurationCondition(exMaxLimit: Long, exMinLimit: Long): String {
     val videoMinS = 1000L
-    val videoMaxS = 60 * 5 * 1000L
+    val videoMaxS = 60 * 30 * 1000L
     var maxS = if (videoMaxS == 0L) java.lang.Long.MAX_VALUE else videoMaxS
     if (exMaxLimit != 0L) {
       maxS = Math.min(maxS, exMaxLimit)

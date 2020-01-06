@@ -39,7 +39,7 @@ import java.util.*
 class EditorActivity : AppCompatActivity(), ViewOperator.AnimatorListener, TabLayout.BaseOnTabSelectedListener<TabLayout.Tab>, ThumbLineBar.OnBarSeekListener, PlayerListener, OnEffectTouchListener, OnRenderListener {
   companion object {
     private const val MUSIC_TAG = "music"
-    private const val USE_ANIMATION_REMAIN_TIME = 300 * 1000
+    private const val USE_ANIMATION_REMAIN_TIME = 1800 * 1000
   }
 
   private lateinit var mSurfaceContainer: FrameLayout
