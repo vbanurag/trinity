@@ -269,7 +269,7 @@ class RecordActivity : AppCompatActivity(), OnRecordingListener, OnRenderListene
     }
     Log.i("trinity", "duration: $duration size: ${mRecordDurations.size}")
     if (duration >= mRecordDuration) {
-      Toast.makeText(this, "已达最大时长", Toast.LENGTH_LONG).show()
+      Toast.makeText(this, "Maximum time has been reached", Toast.LENGTH_LONG).show()
       return
     }
     val date = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -469,10 +469,10 @@ class RecordActivity : AppCompatActivity(), OnRecordingListener, OnRenderListene
       if (it.hasDenied()) {
         mPermissionDenied = true
         AlertDialog.Builder(this)
-          .setMessage("请允许请求的所有权限")
-          .setPositiveButton("请求") { _, _->
+          .setMessage("Please allow all permissions requested")
+          .setPositiveButton("Request") { _, _->
             it.askAgain()
-          }.setNegativeButton("拒绝") { dialog, _->
+          }.setNegativeButton("Refuse") { dialog, _->
             dialog.dismiss()
             finish()
           }.show()
