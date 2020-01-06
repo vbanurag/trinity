@@ -3,7 +3,8 @@
 
 ![icon~](https://github.com/wlanjie/trinity/blob/master/trinity@2x.png)
 
-[![Download](https://api.bintray.com/packages/wlanjie/maven/trinity/images/download.svg?version=0.2.2)](https://bintray.com/wlanjie/maven/trinity/0.2.2/link)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-trinity-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8010)
+[![Download](https://api.bintray.com/packages/wlanjie/maven/trinity/images/download.svg?version=0.2.3)](https://bintray.com/wlanjie/maven/trinity/0.2.3/link)
 ![platform](https://img.shields.io/badge/platform-Android-orange.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -17,6 +18,8 @@
 ```
 125218305
 ```
+## git commit 规范
+- 遵循[git cz](https://github.com/commitizen/cz-cli)
 
 ## 代码规范
 - kotlin缩进使用2空格缩进
@@ -213,7 +216,7 @@ adb devices
 ### 添加jcenter依赖
 ``` gradle
 dependencies {
-    implementation 'com.github.wlanjie:trinity:0.2.2'
+    implementation 'com.github.wlanjie:trinity:0.2.3'
 }
 ```
 

@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.4.1)
 
 enable_language(ASM)
 
-set(-DCMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Wall -s")
-set(-DCMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -s")
+set(-DCMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Wall -s -Wdeprecated-declarations")
+set(-DCMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -s -Wdeprecated-declarations")
 set(PATH_TO_MEDIACORE ${CMAKE_SOURCE_DIR})
 
 add_definitions("
@@ -24,6 +24,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
 endif()
 
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${PATH_TO_MEDIACORE}/)
 include_directories(${PATH_TO_MEDIACORE}/camera/)
 include_directories(${PATH_TO_MEDIACORE}/message/)
@@ -61,6 +62,12 @@ include_directories(${FDKAAC_HEADER})
 #include xlog
 set(XLOG_HEADER ${CMAKE_CURRENT_LIST_DIR}/../../../../extra/xlogger/include)
 include_directories(${XLOG_HEADER})
+
+#include glm
+set(GLM_HEADER ${CMAKE_CURRENT_LIST_DIR}/../../../../extra/glm/glm)
+include_directories(${GLM_HEADER})
+include_directories(${GLM_HEADER}/gtc)
+include_directories(${GLM_HEADER}/gtx)
 
 file(GLOB FILES "${PATH_TO_MEDIACORE}/*.cc")
 file(GLOB FILES_C "${PATH_TO_MEDIACORE}/*.c")
@@ -109,7 +116,8 @@ add_library(
         ${FILES_OPENGL}/yuv_render.cc
         ${FILES_OPENGL}/image_process.cc
         ${FILES_OPENGL}/process_buffer.cc
-        ${FILES_OPENGL}/effect.cc)
+        ${FILES_OPENGL}/effect.cc
+        ${FILES_OPENGL}/blend.cc)
 
 set(FFMPEG_LIB ${CMAKE_CURRENT_LIST_DIR}/../../../../extra/ffmpeg/${ANDROID_ABI})
 add_library(avcodec STATIC IMPORTED)

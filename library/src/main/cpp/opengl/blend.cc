@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2019 Trinity. All rights reserved.
+ * Copyright (C) 2019 Wang LianJie <wlanjie888@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 //
 //  blend.cc
 //  opengl
@@ -15,16 +32,17 @@
 #include <EGL/eglext.h>
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+#include "android_xlog.h"
 #elif __APPLE__
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#define LOGE(format, ...) fprintf(stdout, format, __VA_ARGS__) 
+#define LOGE(format, ...) fprintf(stdout, format, __VA_ARGS__) // NOLINT
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl.h>
 #endif
 
 namespace trinity {
 
-Blend::Blend() {
+Blend::Blend(const char* fragment_shader) {
     default_vertex_coordinates_ = new GLfloat[8];
     default_texture_coordinates_ = new GLfloat[8];
     default_vertex_coordinates_[0] = -1.0F;
@@ -45,12 +63,9 @@ Blend::Blend() {
     default_texture_coordinates_[6] = 1.0F;
     default_texture_coordinates_[7] = 1.0F;
 
-    program_ = CreateProgram(BLEND_VERTEX_SHADER, BLEND_FRAGMENT_SHADER);
-    input_image_texture2_ = glGetUniformLocation(program_, "inputImageTexture2");
-    matrix_location_ = glGetUniformLocation(program_, "matrix");
+    program_ = CreateProgram(BLEND_VERTEX_SHADER, fragment_shader);
     second_program_ = CreateProgram(DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER);
     glUseProgram(second_program_);
-    
     glGenTextures(1, &frame_buffer_texture_id_);
     glGenFramebuffers(1, &frame_buffer_id_);
     glBindTexture(GL_TEXTURE_2D, frame_buffer_texture_id_);
@@ -100,48 +115,48 @@ Blend::~Blend() {
 }
 
 int Blend::OnDrawFrame(int texture_id, int sticker_texture_id, GLfloat* matrix, float alpha_factor) {
+    printf("texture_id: %d sticker_texture_id: %d\n", texture_id, sticker_texture_id);
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_id_);
     glViewport(0, 0, 720, 1280);
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
     glClear(GL_COLOR_BUFFER_BIT);
-    
     glUseProgram(program_);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, texture_id);
-    
+    auto input_image_texture_location = glGetUniformLocation(program_, "inputImageTexture");
+    glUniform1i(input_image_texture_location, 2);
     glActiveTexture(GL_TEXTURE3);
     // bind 贴纸纹理
     glBindTexture(GL_TEXTURE_2D, sticker_texture_id);
     auto input_image_texture2_location = glGetUniformLocation(program_, "inputImageTexture2");
     glUniform1i(input_image_texture2_location, 3);
-    
     auto alpha_factor_location = glGetUniformLocation(program_, "alphaFactor");
     glUniform1f(alpha_factor_location, alpha_factor);
-    
-//    auto matrix_location = glGetUniformLocation(program_, "matrix");
+    // auto matrix_location = glGetUniformLocation(program_, "matrix");
     // 设置矩阵
-//    glUniformMatrix4fv(matrix_location, 1, GL_FALSE, matrix);
-    
+    // glUniformMatrix4fv(matrix_location, 1, GL_FALSE, matrix);
     auto position_location = glGetAttribLocation(program_, "position");
     glEnableVertexAttribArray(position_location);
     glVertexAttribPointer(position_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), default_vertex_coordinates_);
     auto input_texture_coordinate_location = glGetAttribLocation(program_, "inputTextureCoordinate");
     glEnableVertexAttribArray(input_texture_coordinate_location);
-    glVertexAttribPointer(input_texture_coordinate_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), default_texture_coordinates_);
+    glVertexAttribPointer(input_texture_coordinate_location, 2, GL_FLOAT, GL_FALSE,
+            2 * sizeof(GLfloat), default_texture_coordinates_);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
     glUseProgram(second_program_);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_ONE);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, texture_id);
-    
-    auto input_image_texture_location = glGetUniformLocation(second_program_, "inputImageTexture");
-    glUniform1i(input_image_texture_location, 2);
+    auto blend_input_image_texture_location = glGetUniformLocation(second_program_, "inputImageTexture");
+    glUniform1i(blend_input_image_texture_location, 2);
     auto position2_locaiton = glGetAttribLocation(second_program_, "position");
+    glEnableVertexAttribArray(position2_locaiton);
     glVertexAttribPointer(position2_locaiton, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), default_vertex_coordinates_);
     auto input_texture_coordinate2_locaiton = glGetAttribLocation(second_program_, "inputTextureCoordinate");
-    glVertexAttribPointer(input_texture_coordinate2_locaiton, 2, GL_FLOAT, 0, 2 * sizeof(GLfloat), default_texture_coordinates_);
+    glEnableVertexAttribArray(input_texture_coordinate2_locaiton);
+    glVertexAttribPointer(input_texture_coordinate2_locaiton, 2, GL_FLOAT, GL_FALSE,
+            2 * sizeof(GLfloat), default_texture_coordinates_);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDisable(GL_BLEND);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -209,4 +224,4 @@ int Blend::Link(int program) {
     return 0;
 }
 
-}
+}  // namespace trinity
