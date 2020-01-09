@@ -114,7 +114,7 @@ class EditorActivity : AppCompatActivity(), ViewOperator.AnimatorListener, TabLa
     }
     val result = mVideoEditor.play(true)
     if (result != 0) {
-      Toast.makeText(this, "播放失败: $result", Toast.LENGTH_SHORT).show()
+      Toast.makeText(this, "Play failed: $result", Toast.LENGTH_SHORT).show()
     }
 
     findViewById<View>(R.id.next)

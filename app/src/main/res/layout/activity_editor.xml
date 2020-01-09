@@ -75,7 +75,7 @@
             android:id="@+id/thumb_line_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

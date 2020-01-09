@@ -127,27 +127,27 @@ class ThumbRecyclerAdapter(private var mCount: Int, duration: Int, private var m
   }
 
   /**
-   * 缓存缩略图
+   * Cache thumbnail
    */
   fun cacheBitmaps() {
-    //与缩略图的长度一致
+    //Match the length of the thumbnail
     for (i in 1 until mCount + 1) {
       requestFetchThumbnail(i)
     }
   }
 
   /**
-   * 提前获取缩略图的
+   * Get thumbnails in advance
    * @param index count角标
    */
   private fun requestFetchThumbnail(index: Int) {
     val times = longArrayOf((index - 1) * mInterval + mInterval / 2)
     Log.d(TAG, "requestFetchThumbnail请求缓存: ")
     mFetcher!!.requestThumbnailImage(times, object : ThumbnailFetcher.OnThumbnailCompletionListener {
-      private var vecIndex = 1//取不到缩略图时再次取值时100毫秒的差值
+      private var vecIndex = 1//100 milliseconds difference when fetching the thumbnail again
       override fun onThumbnail(frameBitmap: Bitmap, l: Long) {
         if (frameBitmap != null && !frameBitmap.isRecycled) {
-          //缓存bitmap
+          //Cache bitmap
           mCacheBitmaps.put(index, frameBitmap)
           Log.d(TAG, "缓存ThumbnailReady put，time = " + l / 1000 + ", position = " + index)
         } else {
