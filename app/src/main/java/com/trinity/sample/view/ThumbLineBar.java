@@ -49,7 +49,7 @@ public class ThumbLineBar extends FrameLayout {
     protected long mDuration;
 
     /**
-     * 整个时间轴View的宽度（缩略图个数 * 单个缩略图的宽度）
+     * The width of the entire timeline View (the number of thumbnails * the width of a single thumbnail)
      */
     protected float mTimelineBarViewWidth;
 
@@ -98,7 +98,7 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 初始化ui
+     * Initialize ui
      */
     private void initView() {
         int indicatorWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, getResources().getDisplayMetrics());
@@ -217,11 +217,11 @@ public class ThumbLineBar extends FrameLayout {
             mThumbRecyclerAdapter.notifyDataSetChanged();
         }
 
-        //播放时间通过缩略条回调显示
+        //Playback time is shown by a thumbnail bar callback
         restart();
     }
 
-    //初始化布局参数 ->动态适配缩略图大小
+    //Initialize layout parameters-> dynamically adapt thumbnail size
     private void initLayoutParams() {
 
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
@@ -230,14 +230,14 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * recyclerView滚动回调，子类可实现扩张功能
+     * recyclerView scroll callback, subclasses can implement expansion functions
      */
     protected void onRecyclerViewScroll(int dx, int dy) {
         //empty realize
     }
 
     /**
-     * recyclerView滚动状态改变，子类可实现扩张功能
+     * RecyclerView scroll status changes, subclasses can implement expansion functions
      *
      * @param newState int
      */
@@ -256,13 +256,13 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 指示器线条和背景的layoutParams和background Color的设置
+     * Setting of layout lines and background color of indicator lines and background
      *
      * @param view    目标View
-     * @param width   宽
-     * @param height  高
-     * @param gravity 重心
-     * @param color   颜色
+     * @param width   width
+     * @param height  height
+     * @param gravity gravity
+     * @param color   color
      */
     private void setIndicatorViewLayoutParams(View view, int width, int height, int gravity, int color) {
         LayoutParams params = new LayoutParams(width, height, gravity);
@@ -289,9 +289,9 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 获取缩略图的总宽度
+     * Get the total width of the thumbnail
      *
-     * @return int
+     * @return float
      */
     public float getTimelineBarViewWidth() {
         if (mRecyclerView.getAdapter() == null) {
@@ -304,7 +304,7 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 缩略条是否处于滚动状态
+     * Whether the thumbnail bar is scrolling
      * @return boolean
      */
     public boolean isScrolling() {
@@ -313,25 +313,25 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 用户滑动thumbLineBar时的监听
+     * Listening when the user slides the thumbLineBar
      *
-     * @param barSeekListener 监听器
+     * @param barSeekListener Listener
      */
     private void setOnBarSeekListener(OnBarSeekListener barSeekListener) {
         mBarSeekListener = barSeekListener;
     }
 
     /**
-     * 设置播放时间同步player
+     * Set playback time to sync player
      *
-     * @param linePlayer 同步接口
+     * @param linePlayer Synchronization interface
      */
     private void setThumbLinePlayer(PlayerListener linePlayer) {
         mLinePlayer = linePlayer;
     }
 
     /**
-     * 是否正在操作缩略条
+     * Whether the thumbnail bar is being operated
      * @return boolean
      */
     public boolean isTouching() {
@@ -343,18 +343,18 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 隐藏
+     * hide
      */
     public void hide() {
         this.setVisibility(GONE);
     }
 
     /**
-     * 开始显示
+     * Start showing
      */
     public void show() {
         if (mPlayThread != null && mPlayThread.mState != PlayThread.STATE_PLAYING) {
-            //暂停时显示缩略条没有对齐
+            //Show thumbnails not aligned when paused
             seekTo(mLinePlayer.getCurrentDuration(), false);
         }
         setVisibility(VISIBLE);
@@ -485,27 +485,27 @@ public class ThumbLineBar extends FrameLayout {
     }
 
     /**
-     * 用户滑动thumbLineBar时的监听器
+     * The listener when the user slides the thumbLineBar
      */
     public interface OnBarSeekListener {
 
         /**
-         * 正在滑动
+         * Sliding
          *
          * @param duration 时间
          */
         void onThumbLineBarSeek(long duration);
 
         /**
-         * 滑动完成 (用于快速滑动时惯性滑动发生时候)
+         * Slip completion (for inertial slip when fast sliding)
          *
-         * @param duration 时间
+         * @param duration time
          */
         void onThumbLineBarSeekFinish(long duration);
     }
 
     /**
-     * 缩略条的操作监听
+     * Abbreviated operation monitoring
      */
     public interface OnOperationEndListener {
         void onEnd();

@@ -52,11 +52,11 @@ class ThumbLineOverlay(
                     startTime = mMaxDuration - 100000
                     mDuration = mMaxDuration - startTime
                 }
-                mDuration + startTime > mMaxDuration -> //如果动图时长+startTime比最大时长大，则要向前移动，保证不超出范围。
+                mDuration + startTime > mMaxDuration -> //If the animation duration + startTime is longer than the maximum duration, you must move forward to ensure that it does not exceed the range。
                     mDuration = mMaxDuration - startTime
             }
         } else {
-            //目前只有特效有invert处理，而且时间特效和转场特效存在互斥关系，目前没有时长超出的问题
+            // Currently, only special effects have invert processing, and time effects and transition effects have a mutually exclusive relationship.
         }
 
         mSelectedDurationChange?.onDurationChange(startTime, startTime + mDuration, mDuration)
@@ -80,7 +80,7 @@ class ThumbLineOverlay(
                 }
                 var duration = mOverlayThumbLineBar.distance2Duration(distance)
                 if (duration < 0 && mHeadView!!.duration + duration - mTailView!!.duration < mMinDuration) {
-                    //先计算可以减少的duration
+                    //Calculate the duration that can be reduced
                     duration = mMinDuration + mTailView!!.duration - mHeadView!!.duration
                 } else if (duration > 0 && mHeadView!!.duration + duration > mMaxDuration) {
                     duration = mMaxDuration - mHeadView!!.duration
@@ -105,7 +105,7 @@ class ThumbLineOverlay(
 
             override fun onChangeComplete() {
                 if (mState == STATE_ACTIVE) {
-                    //处于激活态的时候定位到滑动处
+                    //Position to slide when active
                     mOverlayThumbLineBar.seekTo(mHeadView!!.duration, true)
                 }
             }
@@ -156,7 +156,7 @@ class ThumbLineOverlay(
 
             override fun onChangeComplete() {
                 if (mState == STATE_ACTIVE) {
-                    //处于激活态的时候定位到滑动处
+                    //Position to slide when active
                     mOverlayThumbLineBar.seekTo(mTailView!!.duration, true)
                 }
             }
@@ -211,13 +211,13 @@ class ThumbLineOverlay(
     }
 
     fun invalidate() {
-        //首先根据duration 计算middleView 的宽度
+        //First calculate the width of the middleView based on the duration
         mDistance = mOverlayThumbLineBar.duration2Distance(mDuration)
         val layoutParams = mSelectedMiddleView!!.layoutParams
         layoutParams.width = mDistance
         mSelectedMiddleView!!.layoutParams = layoutParams
         when (mState) {
-            STATE_ACTIVE//显示HeadView和TailView
+            STATE_ACTIVE//Display HeadView and TailView
             -> {
                 mTailView!!.active()
                 mHeadView!!.active()
@@ -305,8 +305,8 @@ class ThumbLineOverlay(
     companion object {
 
         private val TAG = ThumbLineOverlay::class.java.name
-        private const val STATE_ACTIVE: Byte = 1 //激活态（编辑态）
-        private const val STATE_FIX: Byte = 2    //固定态(非编辑态)
+        private const val STATE_ACTIVE: Byte = 1 //Active state (edited state)
+        private const val STATE_FIX: Byte = 2    //Fixed (non-edited)
     }
 
 }
