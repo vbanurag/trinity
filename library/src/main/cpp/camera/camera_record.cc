@@ -659,17 +659,16 @@ void CameraRecord::SetFrameType(int frame) {
 
 void CameraRecord::FPS() {
     if (pre_fps_count_time_ == 0) {
-        pre_fps_count_time_ = getCurrentTime();
+        pre_fps_count_time_ = getCurrentTimeMills();
     }
-    frame_count_ += 1;
-    long current_time = getCurrentTime();
-    if (current_time > pre_fps_count_time_ + 1000) {
-        fps_ = frame_count_ * 1.0F * 1000 / (current_time - pre_fps_count_time_);
-        frame_count_ = 0;
+    long current_time = getCurrentTimeMills();
+    if (current_time - pre_fps_count_time_ > 1000) {
+        fps_ = (static_cast<float>(frame_count_) / (current_time - pre_fps_count_time_)) * 1000;
         pre_fps_count_time_ = current_time;
+        frame_count_ = 0;
     }
-
-//    LOGD("fps: %f", fps_);
+    frame_count_++;
+    LOGD("fps: %f", fps_);
 }
 
 int CameraRecord::AddFilter(const char *config_path) {
@@ -695,45 +694,103 @@ void CameraRecord::DeleteFilter(int action_id) {
     PostMessage(message);
 }
 
-int CameraRecord::AddAction(const char *effect_config) {
-
+int CameraRecord::AddAction(const char *config_path) {
+    int action_id = current_action_id_++;
+    size_t len = strlen(config_path) + 1;
+    char* path = new char[len];
+    memcpy(path, config_path, len);
+    auto* message = new Message(kEffect, action_id, 0, path);
+    PostMessage(message);
+    return action_id;
 }
 
-void CameraRecord::UpdateAction(int start_time, int end_time, int action_id) {
+void CameraRecord::UpdateActionTime(int start_time, int end_time, int action_id) {
+    auto* message = new Message(kEffectUpdate, start_time, end_time, action_id);
+    PostMessage(message);
+}
 
+void CameraRecord::UpdateActionParam(int action_id, const char *effect_name, const char *param_name,
+                                     float value) {
+    auto param = new EffectParam();
+    param->action_id = action_id;
+    size_t effect_name_len = strlen(effect_name) + 1;
+    param->effect_name = new char[effect_name_len];
+    memcpy(param->effect_name, effect_name, effect_name_len);
+    size_t param_name_len = strlen(param_name) + 1;
+    param->param_name = new char[param_name_len];
+    memcpy(param->param_name, param_name, param_name_len);
+    param->value = value;
+    auto message = new Message(kEffectParamUpdate, param);
+    PostMessage(message);
 }
 
 void CameraRecord::DeleteAction(int action_id) {
-
+    auto* message = new Message(kEffectDelete, action_id, 0);
+    PostMessage(message);
 }
 
 void CameraRecord::OnAddFilter(char* config_path, int action_id) {
-    if (nullptr == image_process_) {
-        return;
+    if (nullptr != image_process_) {
+        LOGI("enter %s id: %d config: %s", __func__, action_id, config_path);
+        image_process_->OnFilter(config_path, action_id);
+        LOGI("leave %s", __func__);
     }
-    LOGI("enter %s id: %d config: %s", __func__, action_id, config_path);
-    image_process_->OnFilter(config_path, action_id);
     delete[] config_path;
-    LOGI("leave %s", __func__);
 }
 
 void CameraRecord::OnUpdateFilter(char *config_path, int action_id,
         int start_time, int end_time) {
-    if (nullptr == image_process_) {
-        return;
+    if (nullptr != image_process_) {
+        LOGI("enter %s config_path: %s action_id: %d start_time: %d end_time: %d", __func__, config_path, action_id, start_time, end_time); // NOLINT
+        image_process_->OnFilter(config_path, action_id, start_time, end_time);
+        LOGI("leave %s", __func__);
     }
-    LOGI("enter %s config_path: %s action_id: %d start_time: %d end_time: %d", __func__, config_path, action_id, start_time, end_time); // NOLINT
-    image_process_->OnFilter(config_path, action_id, start_time, end_time);
     delete[] config_path;
-    LOGI("leave %s", __func__);
 }
 
 void CameraRecord::OnDeleteFilter(int action_id) {
+    if (nullptr != image_process_) {
+        LOGI("enter %s action_id: %d", __func__, action_id);
+        image_process_->OnDeleteFilter(action_id);
+        LOGI("leave %s", __func__);
+    }
+}
+
+void CameraRecord::OnAddAction(char *config_path, int action_id) {
+    if (nullptr != image_process_) {
+        LOGI("enter %s config_path: %s action_id: %d", __func__, config_path, action_id);
+        image_process_->OnAction(config_path, action_id);
+        LOGI("leave %s", __func__);
+    }
+    delete[] config_path;
+}
+
+void CameraRecord::OnUpdateActionTime(int start_time, int end_time, int action_id) {
+    if (nullptr == image_process_) {
+        return;
+    }
+    LOGI("enter %s start_time: %d end_time: %d action_id: %d", __func__, start_time, end_time, action_id);
+    image_process_->OnUpdateActionTime(start_time, end_time, action_id);
+    LOGI("leave %s", __func__);
+}
+
+void CameraRecord::OnUpdateActionParam(EffectParam *param) {
+    if (nullptr != image_process_) {
+        LOGI("enter %s action_id: %d effect_name: %s param_name: %s value: %f", __func__, param->action_id, param->effect_name, param->param_name, param->value); // NOLINT
+        image_process_->OnUpdateEffectParam(param->action_id, param->effect_name, param->param_name, param->value);
+        LOGI("leave %s", __func__);
+    }
+    delete[] param->effect_name;
+    delete[] param->param_name;
+    delete param;
+}
+
+void CameraRecord::OnDeleteAction(int action_id) {
     if (nullptr == image_process_) {
         return;
     }
     LOGI("enter %s action_id: %d", __func__, action_id);
-    image_process_->OnDeleteFilter(action_id);
+    image_process_->RemoveAction(action_id);
     LOGI("leave %s", __func__);
 }
 
@@ -775,6 +832,18 @@ void CameraRecord::HandleMessage(trinity::Message *msg) {
             break;
         case kFilterDelete:
             OnDeleteFilter(msg->GetArg1());
+            break;
+        case kEffect:
+            OnAddAction(static_cast<char *>(msg->GetObj()), msg->GetArg1());
+            break;
+        case kEffectUpdate:
+            OnUpdateActionTime(msg->GetArg1(), msg->GetArg2(), msg->GetArg3());
+            break;
+        case kEffectParamUpdate:
+            OnUpdateActionParam(reinterpret_cast<EffectParam*>(msg->GetObj()));
+            break;
+        case kEffectDelete:
+            OnDeleteAction(msg->GetArg1());
             break;
         default:
             break;
