@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">trinity</string>
 
-    <string name="rate_very_slow">极慢</string>
-    <string name="rate_slow">慢</string>
-    <string name="rate_standard">标准</string>
-    <string name="rate_fast">快</string>
-    <string name="rate_very_fast">极快</string>
+    <string name="rate_very_slow">Very Slow</string>
+    <string name="rate_slow">Slow</string>
+    <string name="rate_standard">Standard</string>
+    <string name="rate_fast">Fast</string>
+    <string name="rate_very_fast">Very Fast</string>
 
     <string-array name="preview_render_preference">
         <item>FIT</item>
@@ -49,16 +49,16 @@
         <item>22050</item>
     </string-array>
 
-    <string name="filter">滤镜</string>
-    <string name="music">音乐</string>
-    <string name="gif">动图</string>
-    <string name="subtitle">字幕</string>
+    <string name="filter">Filter</string>
+    <string name="music">Music</string>
+    <string name="gif">Gif</string>
+    <string name="subtitle">Subtitle</string>
     <string name="mv">MV</string>
-    <string name="sound">音效</string>
-    <string name="effect">特效</string>
-    <string name="speed_time">变速</string>
-    <string name="transition">转场</string>
-    <string name="paint">涂鸦</string>
-    <string name="cover">封面</string>
-    <string name="smoother">磨皮</string>
+    <string name="sound">Sound</string>
+    <string name="effect">Effect</string>
+    <string name="speed_time">Speed Time</string>
+    <string name="transition">Transition</string>
+    <string name="paint">Paint</string>
+    <string name="cover">Cover</string>
+    <string name="smoother">Smoother</string>
 </resources>

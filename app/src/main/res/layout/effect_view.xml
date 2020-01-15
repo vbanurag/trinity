@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="长按可添加效果"
+        android:text="Long press to add effect"
         android:textColor="@android:color/white"
         android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
