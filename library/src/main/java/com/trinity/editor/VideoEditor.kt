@@ -37,8 +37,8 @@ class VideoEditor(
 
   private var mId: Long = 0
   private var mFilterActionId = NO_ACTION
-  // texture回调
-  // 可以做特效处理 textureId是TEXTURE_2D类型
+  // texture callback
+  // can do special effects textureId is TEXTURE_2D type
   private var mOnRenderListener: OnRenderListener ?= null
 
   init {
@@ -69,13 +69,13 @@ class VideoEditor(
   private external fun onSurfaceDestroyed(handle: Long, surface: Surface)
 
   /**
-   * 创建c++对象
-   * @return 返回c++对象地址
+   * Create c ++ object
+   * @return returns the address of the C ++ object
    */
   private external fun create(resourcePath: String): Long
 
   /**
-   * 获取视频时长
+   * Get video duration
    */
   override fun getVideoDuration(): Long {
     return getVideoDuration(mId)
@@ -90,7 +90,7 @@ class VideoEditor(
   private external fun getCurrentPosition(handle: Long): Long
 
   /**
-   * 获取视频片段数量
+   * Get the number of video clips
    */
   override fun getClipsCount(): Int {
     return getClipsCount(mId)
@@ -99,9 +99,9 @@ class VideoEditor(
   private external fun getClipsCount(id: Long): Int
 
   /**
-   * 获取视频clip
-   * @param index 当前片段的下标
-   * @return 下标无效时返回null
+   * Get video clip
+   * @param index the index of the current fragment
+   * @return returns null if the subscript is invalid
    */
   override fun getClip(index: Int): MediaClip? {
     return getClip(mId, index)
@@ -110,9 +110,9 @@ class VideoEditor(
   private external fun getClip(id: Long, index: Int): MediaClip?
 
   /**
-   * 播入一段clip到队列
-   * @param clip 插入的clip对象
-   * @return 插入成功返回0
+   * Broadcast a clip to the queue
+   * @param clip The clip object inserted
+    * @return returns 0 if inserted successfully
    */
   override fun insertClip(clip: MediaClip): Int {
     return insertClip(mId, clip)
@@ -121,11 +121,11 @@ class VideoEditor(
   private external fun insertClip(id: Long, clip: MediaClip): Int
 
   /**
-   * 播入一段clip到队列
-   * @param index 播入的下标
-   * @param clip 插入的clip对象
-   * @return 插入成功返回0
-   */
+     * Broadcast a clip to the queue
+     * @param index broadcast index
+     * @param clip The clip object inserted
+     * @return returns 0 if inserted successfully
+   */
   override fun insertClip(index: Int, clip: MediaClip): Int {
     return insertClip(mId, index, clip)
   }
@@ -133,8 +133,8 @@ class VideoEditor(
   private external fun insertClip(id: Long, index: Int, clip: MediaClip): Int
 
   /**
-   * 删除一个片段
-   * @param index 删除片段的下标
+   * Delete a clip
+   * @param index delete the subscript of the fragment
    */
   override fun removeClip(index: Int) {
     removeClip(mId, index)
@@ -143,11 +143,11 @@ class VideoEditor(
   private external fun removeClip(id: Long, index: Int)
 
   /**
-   * 替换一个片段
-   * @param index 需要替换的下标
-   * @param clip 需要替换片段的对象
-   * @return 替换成功返回0
-   */
+     * Replace a clip
+     * @param index the index to be replaced
+     * @param clip The object whose clip needs to be replaced
+     * @return returns 0 if successful
+   */
   override fun replaceClip(index: Int, clip: MediaClip): Int {
     return replaceClip(mId, index, clip)
   }
@@ -155,8 +155,8 @@ class VideoEditor(
   private external fun replaceClip(id: Long, index: Int, clip: MediaClip): Int
 
   /**
-   * 获取所有片段
-   * @return 返回当前所有片段
+   * Get all clips
+   * @return returns all current fragments
    */
   override fun getVideoClips(): List<MediaClip> {
     return getVideoClips(mId)
@@ -165,9 +165,9 @@ class VideoEditor(
   private external fun getVideoClips(id: Long): List<MediaClip>
 
   /**
-   * 获取当前片段的时间段
-   * @param index 获取的下标
-   * @return 返回当前片段的时间段
+   * Get the time period of the current clip
+   * @param index index
+   * @return returns the time period of the current segment
    */
   override fun getClipTimeRange(index: Int): TimeRange {
     return getClipTimeRange(mId, index)
@@ -188,9 +188,9 @@ class VideoEditor(
   private external fun getClipTime(id: Long, index: Int, videoTime: Long): Long
 
   /**
-   * 根据时间获取片段下标
-   * @param time 传入时间
-   * @return 查找到的坐标, 如果查找不到返回-1
+   * Get clip index based on time
+   * @param time incoming time
+   * @return coordinates found, -1 if not found
    */
   override fun getClipIndex(time: Long): Int {
     return getClipIndex(mId, time)
@@ -201,11 +201,11 @@ class VideoEditor(
   private external fun addAction(): Int
 
   /**
-   * 添加滤镜
-   * @param lut 色阶图buffer
-   * @param startTime 从哪里开始加
-   * @param endTime 到哪里结束
-   * @return 滤镜对应的id, 删除或者更新滤镜时需要用到
+   * Add filters
+     * @param lut color map buffer
+     * @param startTime where to start adding
+     * @param endTime where to end
+     * @return the id of the filter, which is needed when deleting or updating the filter
    */
   override fun addFilter(configPath: String): Int {
     mFilterActionId = addFilter(mId, configPath)
@@ -227,11 +227,11 @@ class VideoEditor(
   private external fun deleteFilter(id: Long, actionId: Int)
 
   /**
-   * 添加背景音乐
-   * @param path 音乐路径
-   * @param startTime 从哪里开始
-   * @param endTime 到哪里结束
-   * @return
+   * Add background music
+     * @param path music path
+     * @param startTime where to start
+     * @param endTime where to end
+     * @return
    */
   override fun addMusic(config: String): Int {
 //    val file = File(path)
@@ -294,8 +294,8 @@ class VideoEditor(
   }
 
   /**
-   * texture回调
-   * 可以做其它特效处理, textureId为普通 TEXTURE_2D 类型
+   * texture callback
+   * Can do other special effects processing, textureId is ordinary TEXTURE_2D type
    * @param textureId Int
    * @param width Int
    * @param height Int
@@ -315,9 +315,9 @@ class VideoEditor(
   private external fun seek(id: Long, time: Int)
 
   /**
-   * 开始播放
-   * @param repeat 是否循环播放
-   * @return 播放成功返回0
+   * Start playing
+   * @param repeat whether to repeat playback
+   * @return returns 0 if successful
    */
   override fun play(repeat: Boolean): Int {
     return play(mId, repeat)
@@ -326,7 +326,7 @@ class VideoEditor(
   private external fun play(id: Long, repeat: Boolean): Int
 
   /**
-   * 暂停播放
+   * Pause playback
    */
   override fun pause() {
     pause(mId)
@@ -335,7 +335,7 @@ class VideoEditor(
   private external fun pause(id: Long)
 
   /**
-   * 继续播放
+   * Resume playback
    */
   override fun resume() {
     resume(mId)
@@ -344,7 +344,7 @@ class VideoEditor(
   private external fun resume(id: Long)
 
   /**
-   * 停止播放, 释放资源
+   *Stop playback, release resources
    */
   override fun stop() {
     stop(mId)
