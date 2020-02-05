@@ -61,4 +61,8 @@
     <string name="paint">Paint</string>
     <string name="cover">Cover</string>
     <string name="smoother">Smoother</string>
+    <string name="effect_tip">effect tip</string>
+    <string name="undo">undo</string>
+    <string name="split_screen">split screen</string>
+    <string name="dream">dream</string>
 </resources>
